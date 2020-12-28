@@ -22,7 +22,6 @@ public class Product {
     @NotBlank
     private String productName;
 
-    @NotBlank
     private String Price;
 
     private Long idKategori;

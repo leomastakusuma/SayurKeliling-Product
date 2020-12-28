@@ -1,5 +1,6 @@
 package com.example.ESayurProduct.controller;
 
+import com.example.ESayurProduct.form.KategoriForm;
 import com.example.ESayurProduct.model.Kategori;
 import com.example.ESayurProduct.repository.KategoriRepository;
 import io.swagger.annotations.Api;
@@ -28,7 +29,9 @@ public class KategoriController {
 
     @ApiOperation("Create Kategori ")
     @PostMapping("/")
-    public Kategori createKategory(@Valid @RequestBody Kategori kategori) {
+    public Kategori createKategory(@Valid @RequestBody KategoriForm kategoriForm) {
+        Kategori kategori = new Kategori();
+        kategori.setKategori(kategoriForm.getKategori());
         return kategoriRepository.save(kategori);
     }
 
@@ -44,9 +47,9 @@ public class KategoriController {
     }
     @ApiOperation("Update User By ID")
     @PutMapping("/{idKategori}")
-    public Kategori updateUser(@PathVariable(value = "idKategori") Long idKategori, @Valid @RequestBody Kategori kategori) {
+    public Kategori updateUser(@PathVariable(value = "idKategori") Long idKategori, @Valid @RequestBody KategoriForm kategoriForm) {
         Kategori kategoriData = kategoriRepository.findById(idKategori).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        kategoriData.setKategori(kategori.getKategori());
+        kategoriData.setKategori(kategoriForm.getKategori());
         return kategoriRepository.save(kategoriData);
     }
 

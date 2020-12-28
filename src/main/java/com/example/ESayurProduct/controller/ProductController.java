@@ -1,5 +1,6 @@
 package com.example.ESayurProduct.controller;
 
+import com.example.ESayurProduct.form.ProductForm;
 import com.example.ESayurProduct.model.Kategori;
 import com.example.ESayurProduct.model.Product;
 import com.example.ESayurProduct.repository.KategoriRepository;
@@ -33,11 +34,16 @@ public class ProductController {
 
     @ApiOperation("Create Product ")
     @PostMapping("/")
-    public Product createKategory(@Valid @RequestBody Product product) {
-        Kategori kategoriData = kategoriRepository.findCategoryId(product.getIdKategori());
+    public Product createKategory(@Valid @RequestBody ProductForm productForm) {
+        Kategori kategoriData = kategoriRepository.findCategoryId(productForm.getIdKategori());
         if(kategoriData ==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }else{
+            Product product = new Product();
+            product.setPrice(productForm.getPrice());
+            product.setProductName(productForm.getProductName());
+            product.setIdKategori(productForm.getIdKategori());
+            product.setIdUser(productForm.getIdUser());
             return productRepository.save(product);
        }
     }
@@ -52,20 +58,19 @@ public class ProductController {
         }
     }
 
-
-
     @ApiOperation("Update Product By ID")
     @PutMapping("/{idProduct}")
-    public Product updateUser(@PathVariable(value = "idProduct") Long idProduct, @Valid @RequestBody Product product) {
-
+    public Product updateUser(@PathVariable(value = "idProduct") Long idProduct, @Valid @RequestBody ProductForm productForm) {
         Product productData = productRepository.getByIDs(idProduct);
         if(productData ==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }else{
-            productData.setIdKategori(product.getIdKategori());
-            productData.setProductName(product.getProductName());
-            productData.setPrice(product.getPrice());
-            return productRepository.save(productData);
+            Product product = new Product();
+            product.setIdKategori(productForm.getIdKategori());
+            product.setIdUser(productForm.getIdUser());
+            product.setProductName(productForm.getProductName());
+            product.setPrice(productForm.getPrice());
+            return productRepository.save(product);
         }
     }
     @ApiOperation("Delete Product")
